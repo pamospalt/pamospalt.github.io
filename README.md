@@ -1,6 +1,6 @@
 This is a website about PaMoSplat
 
-link: https://PaMoSplat.github.io/
+link: https://PaMoSpalt.github.io/
 
 git pull
 
