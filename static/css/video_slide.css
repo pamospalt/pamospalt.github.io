@@ -1,0 +1,31 @@
+.carousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 1000px; /* 根据需要调整宽度 */
+    margin: auto; /* 居中 */
+}
+
+.slider-item {
+    display: inline-block; /* 使视频并排显示 */
+    width: calc(100% - 10px); /* 每个视频占据 1/3 宽度，减去间隔 */
+    margin-right: 10px; /* 右侧间隔 */
+    vertical-align: top; /* 顶部对齐 */
+}
+
+.slider-item:last-child {
+    margin-right: 0; /* 最后一个视频不需要右侧间隔 */
+}
+
+.slider-item video {
+    width: 100%; /* 确保视频占满容器 */
+    border-radius: 10px; /* 设置圆角，调整数值以更改圆角的大小 */
+}
+
+.slider-item.active {
+    display: block; /* 只显示当前活动视频 */
+}
+
+.hero {
+    margin-bottom: 20px; /* 根据需要调整空白的大小 */
+}

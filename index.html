@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="PaMoSplat: Part-Aware Motion-Guided Gaussian Splatting for Dynamic Scene Reconstruction.">
+  <meta name="keywords" content="PaMoSplat,  Open-Vocabulary, 3D Gaussians">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PaMoSplat</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+  <link rel="stylesheet" href="./static/css/video_slide.css"/>
+  <link rel="stylesheet" href="./static/css/twentytwenty.css"/>
+  <!-- <link rel="stylesheet" href="./static/css/titleCenter.css"/> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/video_slide.js"></script>
+  <script src="./static/js/jquery.twentytwenty.js"></script>
+  <script>
+    $(function(){
+      $(".twentytwenty-container[data-orientation!='vertical']").twentytwenty({default_offset_pct: 0.7});
+      $(".twentytwenty-container[data-orientation='vertical']").twentytwenty({default_offset_pct: 0.3, orientation: 'vertical'});
+    });
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>放大图片</title>
+    <style>
+        #teaser {
+            width: 1500px; /* 根据需求设置宽度 */
+            height: auto; /* 保持纵横比 */
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <img src="static/images/logo.svg" alt="logo" />
+      </div>
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Part-Aware Motion-Guided Gaussian Splatting for Dynamic Scene Reconstruction</h1>
+          <span class="author-block" style="font-size: 20px;">
+            <span class="author-block">
+              <a href="https://bit-dyn.github.io/">Yinan Deng</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href=" ">Jianyu Dou</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href=" ">Jiahui Wang</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href=" ">Jingyu Zhao</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href=" ">Yi Yang</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://yfyue-bit.github.io/">Yufeng Yue</a><sup>1</sup>
+            </span>
+          </span>
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <!-- <span class="link-block">
+                <a href="https://arxiv.org/pdf/2406.08009"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2406.08009"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span> -->
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=BeUdxrjItDE"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/PaMoSplat/anonymous_code"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <style>
+        .hero.teaser,
+        .section {
+          margin-bottom: 0; /* 或者设为一个较小的数值，例如 10px */
+        }
+      </style>
+      <style>
+        .title.is-3 {
+          text-align: center;
+        }
+      </style>
+      <h2 class="title is-3">Poster</h2>
+      <img id="teaser" src="./static/images/poster.png" alt="teaser">
+      <!-- <h2 class="subtitle has-text-centered">
+        <span class="dnerf"> OpenObj facilitates various downstream tasks. </span>
+      </h2> -->
+    </div>
+  </div>
+</section>
+
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Video</h2>
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/BeUdxrjItDE?si=xM9mUG0Zw5sTU4g1"
+                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+  </div>
+</section> -->
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p style="text-indent: 2em;">
+            Dynamic scene reconstruction is a critical yet challenging task in both computer vision and robotics. 
+            Despite recent advancements in 3D Gaussian Stitching (3DGS) based approaches for modeling dynamics, achieving high-quality rendering and precise tracking in large complex motion scenes remains formidable.
+            To address these challenges, we propose PaMoSplat, a novel incremental Gaussian splatting framework incorporating part awareness and motion priors. 
+            Two key insights of PaMoSplat are: 1) Parts serve as primitives for scene deformation, and 2) Motion cues from optical flow can effectively guide movements.
+            In PaMoSplat, for the initial timestamp, graph clustering technique facilitates the lifting of multi-view segmentation masks into 3D to create Gaussian parts. For subsequent timestamps, a differential evolutionary algorithm is employed to infer prior motion of these Gaussian parts based on the optical flow across views, serving as initial state for further optimization. Additionally, PaMoSplat introduces internal learnable rigidity for the parts and flow-supervised rendering loss.
+            Experiments on several real-world scenes demonstrate that PaMoSplat achieves exceptional rendering quality and tracking accuracy. Furthermore, it enables a variety of downstream applications, including 4D part retrieval and video editing.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <style>
+        .title.is-3 {
+          text-align: center;
+        }
+      </style>
+      <h2 class="title is-3">Framework</h2>
+      <img id="teaser" src="./static/images/framework.png" alt="teaser">
+      <!-- <h2 class="subtitle has-text-centered">
+        <span class="dnerf"> OpenObj facilitates various downstream tasks. </span>
+      </h2> -->
+    </div>
+  </div>
+</section>
+
+<h2 class="title is-3">Gaussian Centers + Track Trajectories</h2>
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="carousel">
+        <div class="slider-item active">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/basketball/centers_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/boxes/centers_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/football/centers_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/juggle/centers_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/softball/centers_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/tennis/centers_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/robot_task/centers_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/pendulums/centers_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1101_applemove/centers_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1101_spongebowl/centers_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1104_clothpan/centers_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h2 class="title is-3">Colors + Track Trajectories</h2>
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="carousel">
+        <div class="slider-item active">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/basketball/color_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/boxes/color_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/football/color_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/juggle/color_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/softball/color_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/tennis/color_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/robot_task/color_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/pendulums/color_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1101_applemove/color_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1101_spongebowl/color_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1104_clothpan/color_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h2 class="title is-3">Gaussian Part + Track Trajectories</h2>
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="carousel">
+        <div class="slider-item active">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/basketball/groupcolor_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/boxes/groupcolor_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/football/groupcolor_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/juggle/groupcolor_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/softball/groupcolor_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/tennis/groupcolor_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/robot_task/groupcolor_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/pendulums/groupcolor_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1101_applemove/groupcolor_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1101_spongebowl/groupcolor_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1104_clothpan/groupcolor_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h2 class="title is-3">Depth + Track Trajectories</h2>
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="carousel">
+        <div class="slider-item active">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/basketball/depth_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/boxes/depth_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/football/depth_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/juggle/depth_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/softball/depth_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/tennis/depth_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/robot_task/depth_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/pendulums/depth_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1101_applemove/depth_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1101_spongebowl/depth_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1104_clothpan/depth_trajectories_264.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h2 class="title is-3">Optical Flow</h2>
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="carousel">
+        <div class="slider-item active">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/basketball/basketball_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/boxes/boxes_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/football/football_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/juggle/juggle_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/softball/softball_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/tennis/tennis_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/robot_task/robot_task_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/pendulums/pendulums_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1101_applemove/1101_applemove_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1101_spongebowl/1101_spongebowl_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/our_video/1104_clothpan/1104_clothpan_264.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h2 class="title is-3">Part-level Edit</h2>
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="carousel">
+        <div class="slider-item active">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/edit/boxes_basketball_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/edit/juggle_football_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/edit/robot_task_basketball_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/edit/robot_task_juggle_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/edit/1104_applepan_orangebowl_basketball_264.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="slider-item">
+          <video controls muted loop playsinline>
+            <source src="./static/videos/edit/1104_five_softball_264.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Visual Comparisons with other method</h2>
+    <p class="caption selection" style="grid-column-start: 1; grid-column-end: 3; text-align: center;">
+      Compare using the Visual Scene 
+      <select id="partial_label-selector1_3D" class="partial_label-selector-3D" style="padding: 2px; background:#f0f0f0; border:none; font-family: 'Noto Sans', sans-serif; font-size:16px; text-align: center;">
+        <option value="apple_move" selected="">apple_move</option>
+        <option value="cloth_pan">cloth_pan</option>
+        <option value="softball">softball</option>
+        <option value="basketball">basketball</option>
+        <option value="juggle">juggle</option>
+        <option value="tennis">tennis</option>
+        <option value="robot_task">robot_task</option>
+        <option value="pendulums">pendulums</option>
+      </select>
+    </p>
+    <br/>
+      <div class="partial_label_3D softball" style="display: none;">
+      <!--  room0  -->
+        <div class="grid-container">
+          <div class="twentytwenty-container twentytwenty-compare-4" style="width:60%">
+            <img src="./static/images/softball/3DGS_10_145.png" alt="3DGS-O"/>
+            <img src="./static/images/softball/D3DG_10_145.png" alt="D-3DGS"/>
+            <img src="./static/images/softball/PaMoSplat_10_145.png" alt="PaMoSplat"/>
+            <img src="./static/images/softball/GT_10_145.png" alt="GT"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="partial_label_3D basketball" style="display: none;">
+        <!--  office0 -->
+        <div class="grid-container">
+          <div class="twentytwenty-container twentytwenty-compare-4" style="width:60%">
+            <img src="./static/images/basketball/3DGS_30_80.png" alt="3DGS-O"/>
+            <img src="./static/images/basketball/D3DG_30_80.png" alt="D-3DGS"/>
+            <img src="./static/images/basketball/PaMoSplat_30_80.png" alt="PaMoSplat"/>
+            <img src="./static/images/basketball/GT_30_80.png" alt="GT"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="partial_label_3D juggle" style="display: none;">
+      <!--  office3  -->
+      <div class="grid-container">
+        <div class="twentytwenty-container twentytwenty-compare-4" style="width:60%">
+          <img src="./static/images/juggle/3DGS_10_50.png" alt="3DGS-O"/>
+          <img src="./static/images/juggle/D3DG_10_50.png" alt="D-3DGS"/>
+          <img src="./static/images/juggle/PaMoSplat_10_50.png" alt="PaMoSplat"/>
+          <img src="./static/images/juggle/GT_10_50.png" alt="GT"/>
+        </div>
+      </div>
+      </div>
+      <div class="partial_label_3D tennis" style="display: none;">
+        <!--  office3  -->
+        <div class="grid-container">
+          <div class="twentytwenty-container twentytwenty-compare-4" style="width:60%">
+            <img src="./static/images/tennis/3DGS_0_20.png" alt="3DGS-O"/>
+            <img src="./static/images/tennis/D3DG_0_20.png" alt="D-3DGS"/>
+            <img src="./static/images/tennis/PaMoSplat_0_20.png" alt="PaMoSplat"/>
+            <img src="./static/images/tennis/GT_0_20.png" alt="GT"/>
+          </div>
+        </div>
+      </div>
+
+        <div class="partial_label_3D robot_task" style="display: none;">
+          <!--  office3  -->
+          <div class="grid-container">
+          <div class="twentytwenty-container twentytwenty-compare-4" style="width:60%">
+            <img src="./static/images/robot_task/3DGS_22_18.png" alt="3DGS-O"/>
+            <img src="./static/images/robot_task/D3DG_22_18.png" alt="D-3DGS"/>
+            <img src="./static/images/robot_task/PaMoSplat_22_18.png" alt="PaMoSplat"/>
+            <img src="./static/images/robot_task/GT_22_18.png" alt="GT"/>
+          </div>
+        </div>
+      </div>
+      
+          <div class="partial_label_3D pendulums" style="display: none;">
+            <!--  office3  -->
+            <div class="grid-container">
+              <div class="twentytwenty-container twentytwenty-compare-4" style="width:60%">
+                <img src="./static/images/pendulums/3DGS_24_20.png" alt="3DGS-O"/>
+                <img src="./static/images/pendulums/D3DG_24_20.png" alt="D-3DGS"/>
+                <img src="./static/images/pendulums/PaMoSplat_24_20.png" alt="PaMoSplat"/>
+                <img src="./static/images/pendulums/GT_24_20.png" alt="GT"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="partial_label_3D apple_move">
+            <!--  office3  -->
+            <div class="grid-container">
+              <div class="twentytwenty-container twentytwenty-compare-4" style="width:60%">
+                <img src="./static/images/apple_move/3DGS-O_8.png" alt="3DGS-O"/>
+                <img src="./static/images/apple_move/D-3DGS_8.png" alt="D-3DGS"/>
+                <img src="./static/images/apple_move/PaMoSplat_8.png" alt="PaMoSplat"/>
+                <img src="./static/images/apple_move/GT_8.png" alt="GT"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="partial_label_3D cloth_pan" style="display: none;">
+            <!--  office3  -->
+            <div class="grid-container">
+              <div class="twentytwenty-container twentytwenty-compare-4" style="width:60%">
+                <img src="./static/images/cloth_pan/3DGS-O_40.png" alt="3DGS-O"/>
+                <img src="./static/images/cloth_pan/D-3DGS_40.png" alt="D-3DGS"/>
+                <img src="./static/images/cloth_pan/PaMoSplat_40.png" alt="PaMoSplat"/>
+                <img src="./static/images/cloth_pan/GT_40.png" alt="GT"/>
+              </div>
+            </div>
+          </div>
+      
+    <script src="https://cdn.knightlab.com/libs/juxtapose/latest/js/juxtapose.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.knightlab.com/libs/juxtapose/latest/css/juxtapose.css">
+    <script src="./static/js/select.js"></script>
+    <link rel="stylesheet" href="./static/css/twentytwenty.css"/>
+    <script src="./static/js/jquery.twentytwenty.js"></script>
+    <script>
+      $(function(){
+        $(".twentytwenty-container[data-orientation!='vertical']").twentytwenty({default_offset_pct: 0.7});
+        $(".twentytwenty-container[data-orientation='vertical']").twentytwenty({default_offset_pct: 0.3, orientation: 'vertical'});
+      });
+    </script>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{pamosplat,
+      title={PaMoSplat: Part-Aware Motion-Guided Gaussian Splatting for Dynamic Scene Reconstruction},
+      author={Anonymous Authors},
+      journal={CVPR Under Review},
+      year={2025}
+    }</code></pre>
+  </div>
+</section>
+
+<script>
+  var video = document.getElementById("v1");
+
+  // 监听视频的loadedmetadata事件，该事件在视频元数据加载完成后触发
+  video.addEventListener("loadedmetadata", function() {
+    // 设置视频的当前播放位置为0
+    video.currentTime = 0;
+
+    // 播放视频
+    video.play();
+  });
+</script>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+            This webpage template is from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. 
+            We sincerely thank <a href="https://keunhong.com/">Keunhong Park</a> for developing and open-sourcing this template.
+          </p>
+        </div>
+      </div>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
